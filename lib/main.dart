@@ -378,6 +378,15 @@ class Frases extends StatelessWidget {
     this.codigo = codigo;
   }
 
+  GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
+
+  void _showSnackBar() {
+    _scaffoldState.currentState.showSnackBar(SnackBar(
+      content: Text("Copiado!"),
+      duration: Duration(seconds: 1),
+    ));
+  }
+
   Widget todasFrases() {
     RetornaFrases f = new RetornaFrases(codigo);
     List<String> todas = new List<String>();
@@ -394,6 +403,7 @@ class Frases extends StatelessWidget {
     return new GestureDetector(
       onTap: () {
         Clipboard.setData(new ClipboardData(text: str));
+        _showSnackBar();
       },
       child: ListTile(
         title: Text(str),
@@ -405,6 +415,7 @@ class Frases extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldState,
       body: Container(
         child: SingleChildScrollView(
           child: Column(
