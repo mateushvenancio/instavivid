@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'modificadores.dart';
+import 'frases.dart';
 import 'info.dart';
 
 void main() => runApp(MyApp());
@@ -103,14 +104,6 @@ class _PaginaInicialState extends State<PaginaInicial> {
           ),
         ),
         centerTitle: true,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.info),
-            onPressed: () {
-              Navigator.of(context).pushNamed("/Info");
-            },
-          )
-        ],
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -143,6 +136,99 @@ class _PaginaInicialState extends State<PaginaInicial> {
               ),
             ],
           ),
+        ),
+      ),
+      drawer: Drawer(
+        child: ListView(
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage("assets/ceu-capa.jpg"),
+                    fit: BoxFit.cover),
+              ),
+              child: Center(
+                child: Text(
+                  "Instavivid",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 25,
+                    fontFamily: 'Lobster',
+                  ),
+                ),
+              ),
+            ),
+            ListTile(
+              title: Text(
+                "Início",
+                style: TextStyle(color: Colors.deepPurpleAccent),
+              ),
+              subtitle: Text("Ir para tela inicial"),
+              trailing: Icon(Icons.home),
+            ),
+            ExpansionTile(
+              title: Text(
+                "Frases",
+                style: TextStyle(color: Colors.deepPurpleAccent),
+              ),
+              trailing: Icon(Icons.arrow_drop_down),
+              children: <Widget>[
+                ListTile(
+                  title: Text("Diversos"),
+                  leading: Icon(Icons.star_border),
+                  onTap: () {
+                    Navigator.of(context)
+                        .push(new MaterialPageRoute(builder: (context) {
+                      return new Frases(1);
+                    }));
+                  },
+                ),
+                ListTile(
+                  title: Text("Masculinas"),
+                  leading: Icon(Icons.star_border),
+                  onTap: () {
+                    Navigator.of(context)
+                        .push(new MaterialPageRoute(builder: (context) {
+                      return new Frases(2);
+                    }));
+                  },
+                ),
+                ListTile(
+                  title: Text("Gratidão"),
+                  leading: Icon(Icons.star_border),
+                  onTap: () {
+                    Navigator.of(context)
+                        .push(new MaterialPageRoute(builder: (context) {
+                      return new Frases(3);
+                    }));
+                  },
+                ),
+                ListTile(
+                  title: Text("Em inglês"),
+                  leading: Icon(Icons.star_border),
+                  onTap: () {
+                    Navigator.of(context)
+                        .push(new MaterialPageRoute(builder: (context) {
+                      return new Frases(4);
+                    }));
+                  },
+                ),
+              ],
+            ),
+            Divider(),
+            ListTile(
+              title: Text(
+                "Sobre",
+                style: TextStyle(color: Colors.deepPurpleAccent),
+              ),
+              subtitle: Text("Sobre o aplicativo!"),
+              trailing: Icon(Icons.android),
+              onTap: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => Info()));
+              },
+            ),
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -272,7 +358,8 @@ class _nomeEnfeitadoState extends State<nomeEnfeitado> {
     return Scaffold(
       key: _scaffoldState,
       appBar: AppBar(
-        title: Text("Enfeite!"),
+        title: Text("Enfeite"),
+        centerTitle: true,
       ),
       body: Center(
         child: Column(
@@ -280,6 +367,79 @@ class _nomeEnfeitadoState extends State<nomeEnfeitado> {
             getTextEnfeitados(mod.todasEnfeite(widget.nome)),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class Frases extends StatelessWidget {
+  int codigo;
+  Frases(int codigo) {
+    this.codigo = codigo;
+  }
+
+  Widget todasFrases() {
+    RetornaFrases f = new RetornaFrases(codigo);
+    List<String> todas = new List<String>();
+    todas = f.getFrases();
+    List<Widget> widg = new List<Widget>();
+
+    for (int i = 0; i < todas.length; i++) {
+      widg.add(retornaUmaFrase(todas[i]));
+    }
+    return new Column(children: widg);
+  }
+
+  Widget retornaUmaFrase(String str) {
+    return new GestureDetector(
+      onTap: () {
+        Clipboard.setData(new ClipboardData(text: str));
+      },
+      child: ListTile(
+        title: Text(str),
+        leading: Icon(Icons.star),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Container(
+                constraints: BoxConstraints.expand(height: 200),
+                alignment: Alignment.center,
+                child: Text(
+                  "Frases",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'Lobster',
+                    fontSize: 50,
+                  ),
+                ),
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/ceu-capa.jpg"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+              ),
+              todasFrases(),
+            ],
+          ),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        child: Icon(Icons.arrow_back),
       ),
     );
   }

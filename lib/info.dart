@@ -20,7 +20,6 @@ Widget corpo = Center(
         child: Text(
           "Basta digitar seu nome no campo e confirmar!\nClique em um dos textos gerados pra copiá-lo!",
           style: TextStyle(
-            fontFamily: "Pacifico",
             fontSize: 15,
           ),
           textAlign: TextAlign.center,
@@ -31,7 +30,6 @@ Widget corpo = Center(
         child: Text(
           "Logo abaixo aparece a barra de confirmação.\nClique em \"Enfeite\" para mais caracteres especiais!",
           style: TextStyle(
-            fontFamily: "Pacifico",
             fontSize: 15,
           ),
           textAlign: TextAlign.center,
